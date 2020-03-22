@@ -1,4 +1,5 @@
-# NLP From
+# NLP Form
+A natural language processing form made for the Udacity Front End Nanodegree.
 
 ## Features
 The UI allows a user to enter text. The NLP will run and return a variety of information about the text that was entered.
