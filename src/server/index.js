@@ -7,23 +7,12 @@ const bodyParser = require('body-parser')
 const mockAPIResponse = require('./mockAPI.js')
 const aylien = require('aylien_textapi')
 
+const projectData = {}
+
 const textapi = new aylien({
     application_id: process.env.API_ID,
     application_key: process.env.API_KEY
 })
-
-textapi.sentiment({
-    'text': 'John is a very good football player!'
-}, function (error, response, rateLimits) {
-    console.log('rate limits', rateLimits)
-    if (error === null) {
-        console.log('response', response)
-    } else {
-        console.log('error', error)
-    }
-})
-
-console.log(process.env.API_KEY)
 
 const app = express()
 
@@ -48,3 +37,39 @@ app.listen(8081, function () {
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
+
+app.post('/getSentiment', async (req, res) => {
+    let body = await req.body.newData
+    console.log('body', body.newSentiment)
+
+    // let testing = await textapi.sentiment({
+    //     'text': body.newSentiment,
+    //     function (error, response, rateLimits) {
+    //         console.log('rate limits', rateLimits)
+    //         if (error === null) {
+    //             console.log('response', response)
+    //         } else {
+    //             console.log('error', error)
+    //         }
+    //     }
+    // })
+
+    let testing = await textapi.sentiment({
+        'text': body.newSentiment
+    }, function (error, response, rateLimits) {
+        console.log('rate limits', rateLimits)
+        if (error === null) {
+            console.log(response)
+            res.status(200).json({ data: response })
+        } else {
+            res.status(400).json({ data: error })
+        }
+    })
+
+    console.log(testing)
+
+    // res.status(200).json({
+    //     data: testing
+    // })
+})
+
