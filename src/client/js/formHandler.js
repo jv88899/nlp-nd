@@ -14,6 +14,15 @@
 // }
 
 const userSentiment = document.querySelector('#name')
+const formResults = document.querySelector('#results')
+
+const buildUI = data => {
+    formResults.innerHTML = `
+        <h2>Your Text Was: ${data.data.text}</h2>
+        <p>The Polarity Was: ${data.data.polarity}</p>
+        <p>The Subjectivity Was: ${data.data.subjectivity}</p>
+    `
+}
 
 const handleSubmit = async e => {
     e.preventDefault()
@@ -37,6 +46,8 @@ const handleSubmit = async e => {
 
     const body = await response.json()
     console.log(body)
+    buildUI(body)
+
 }
 
 export { handleSubmit }
